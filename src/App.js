@@ -47,12 +47,19 @@ class App extends Component{
     let personDiv = null
     if (this.state.personBool){
       personDiv = <div>
+        {
+          this.state.persons.map(person =>{
+            return <Person name={person.name}></Person>
+          })
+        }
         <UserInput click ={this.changeNameHandler}></UserInput>
       <UserOutput userName = {this.state.persons[0].name} ></UserOutput>
       <UserOutput userName = {this.state.persons[1].name}></UserOutput>
       <UserOutput userName = {this.state.persons[2].name} ></UserOutput>
       </div>
     }
+
+    
     return (
       <div className="App">
       <h1>Hello from React</h1>
@@ -61,7 +68,7 @@ class App extends Component{
       </button>
       {/* <Person name= {this.state.persons[0].name} click = {this.switchNameHandler.bind(this,"dummy name")}> first</Person> */}
       {/* <Person name= {this.state.persons[0].name} changed={this.changeNameHandler} >  second</Person> */}
-      <personDiv />
+      {personDiv}
       
       </div>
     );
