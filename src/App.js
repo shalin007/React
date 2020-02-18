@@ -3,73 +3,43 @@ import logo from './logo.svg';
 import './App.css';
 import UserOutput from './UserOutput/UserOutput';
 import UserInput from './UserInput/UserInput'
+import ValidationComponent from './ValidationComponent/ValidationComponent'
 
 import Person from './Person/Person';
+import userOutput from './UserOutput/UserOutput';
+import Char from './CharComponent/Char'
 
 
 class App extends Component{
-  state = {
-    persons:[
-      {name:"max"},
-      {name:"shalin"},
-      {name:"kishan"}
-
-    ],
-    personBool :true
+  state ={
+    userInput : ''
   }
-  switchNameHandler = (newName) =>{
+  changeHandler = (event) =>{
     this.setState({
-      persons:[
-        {name:newName},
-        {name:"this is changed."}
-  
-      ]
+      userInput : event.target.value
     })
   }
-   changeNameHandler = (event) =>{
+
+  deleteHandler = (index) =>{
+    const text = this.state.userInput.split('')
+    const updated_text = text.slice(index,1).join('')
     this.setState({
-      persons:[
-        {name:event.target.value},
-        {age:"this is changed."}
-      ]
+      userInput:updated_text
     })
-  }
-  togglePersonHandler = () => {
-    const showPersons = this.state.personBool
-    this.setState({
-      personBool:!showPersons
-    })
-
-  }
-
-
-  render(){
-    let personDiv = null
-    if (this.state.personBool){
-      personDiv = <div>
-        {
-          this.state.persons.map(person =>{
-            return <Person name={person.name}></Person>
-          })
-        }
-        <UserInput click ={this.changeNameHandler}></UserInput>
-      <UserOutput userName = {this.state.persons[0].name} ></UserOutput>
-      <UserOutput userName = {this.state.persons[1].name}></UserOutput>
-      <UserOutput userName = {this.state.persons[2].name} ></UserOutput>
-      </div>
     }
-
-    
+  
+  render(){
+    const charList  = this.state.userInput.split('').map((ch,index) => {
+      return <Char ch={ch} key={index} click = {()=> this.deleteHandler(index)}></Char>
+    })
     return (
       <div className="App">
       <h1>Hello from React</h1>
-      <button onClick={this.togglePersonHandler}> CLICK ME  
-        {React.version}
-      </button>
-      {/* <Person name= {this.state.persons[0].name} click = {this.switchNameHandler.bind(this,"dummy name")}> first</Person> */}
-      {/* <Person name= {this.state.persons[0].name} changed={this.changeNameHandler} >  second</Person> */}
-      {personDiv}
-      
+      <button >{React.version}</button>
+      <input  onChange={this.changeHandler} value={this.state.userInput}></input>
+      <p>{this.state.userInput}</p>
+      <ValidationComponent name = {this.state.userInput.length}></ValidationComponent>
+      {charList}
       </div>
     );
   }
